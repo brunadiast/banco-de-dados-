@@ -1,0 +1,63 @@
+constraint significa restrição, ela está restringindo (diminuindo a ação do banco de dados em alguma questão)
+chave estrangeira é um valor que apresenta determinado resgitro de uma tabela externa.
+fk armazena as informações de outra tabela
+alter diferente de update
+restrição fk protege o banco de dados
+-----------------------------------------------------------------------------------------------------------------------------------------
+primary_key é o campo ou conjunto de campo que indentifica de forma única uma determinada linha da tabela
+-----------------------------------------------------------------------------------------------------------------------------------------
+a ação de propagação ela sempre ocorre da tabela mestre pras tabelas escravas
+-----------------------------------------------------------------------------------------------------------------------------------------
+diferença de char para varchar : varchar é um caracter variado, que ocupa o mesmo número de caracter é o mesmo número de byte, 
+e ele é mais eficiente no armazenamento, mas ele não é tão eficiente no processamento, ele ultiliza uma lista encadeada que gasta mais 
+tempo que usar fazendo um vetor do char, o char é mais efienciente, mas depende a situação que cada um sera mais útil.
+-----------------------------------------------------------------------------------------------------------------------------------------
+CRIAR TABELA
+create table aluno (pk_aluno serial primary key,nome varchar (80),idade int
+-----------------------------------------------------------------------------------------------------------------------------------------
+ENSERIR DADOS
+insert into aluno (nome,idade) values ('bruno',17)
+-----------------------------------------------------------------------------------------------------------------------------------------
+IMPRIMIR DADOS 
+select * from aluno 
+-----------------------------------------------------------------------------------------------------------------------------------------
+APAGAR DADO DO BANCO DE DADOS(Comando de dados= DML)
+delete from aluno
+-----------------------------------------------------------------------------------------------------------------------------------------
+APAGAR UM DADO ESPECIFICO
+delete from aluno where pk aluno = 1
+-----------------------------------------------------------------------------------------------------------------------------------------
+SELECIONA APENAS OS QUE TIVER A LETRA C ( ou qualquer outra letra selecionada)
+where nome like 'C%' 
+-----------------------------------------------------------------------------------------------------------------------------------------
+ORDENAR POR NOME ,IDADE ETC
+(EX)
+select * from aluno
+order by pk_aluno,idade
+ou 
+select * from aluno
+order by idade, pk_aluno
+------------------------------------------------------------------------------------------------------------------------------------------
+PARA ORDENAR DECRECENTE 
+order by nome desc 
+-------------------------------------------------------------------------------------------------------------------------------------------
+SERIAL = Auto incremento
+-------------------------------------------------------------------------------------------------------------------------------------------
+CONSTRAINT = Regra/restrição{
+	restrição = Promover que nem tudo pode ser feito	
+	CONSTRAINT = Está diminuindo a ação em um Banco de Dados em algum lugar
+	Protege o BDA de algo de errado que está tentando acontecer
+}
+-------------------------------------------------------------------------------------------------------------------------------------------
+CHAVE ESTRANGEIRA = foreign key
+-------------------------------------------------------------------------------------------------------------------------------------------
+alter table é para atualizar estrutura da tabela
+-------------------------------------------------------------------------------------------------------------------------------------------
+up date alterar as linhas da tabela
+-------------------------------------------------------------------------------------------------------------------------------------------
+1° backcup 
+2° testar o comando
+-------------------------------------------------------------------------------------------------------------------------------------------
+trocar uma linha ou uma informação para outra pessoa :
+update aluno set nome ='bruna' 
+where pk_aluno = 7

@@ -1,0 +1,865 @@
+create table Clientes(pkCliente serial primary key,
+		nome varchar (80),
+		cpf char(14) unique 
+		);
+
+create table Clientes_enderecos(pkEndereco serial primary key,
+		fkCliente int, 
+		logradouro varchar (60), 
+		bairro varchar (60), 
+		cidade varchar (30), 
+		estado char (2), 
+		pais varchar (30), 
+		cep char (9),
+
+		constraint endCliente foreign key (fkCliente) references clientes(pkCliente) on update cascade on delete cascade
+		);
+
+create table Cargos(pkCargo serial primary key,
+		 nome varchar (80) unique,
+		 descricao varchar(60)
+		 );
+
+create table Funcionarios(pkFuncionario serial primary key,
+		fkCargo int,
+		nome varchar(60),
+		cpf char(14) unique
+		);
+
+alter table Funcionarios add constraint endFuncionario foreign key (fkFuncionario) references funcionarios(pkfuncionario)
+
+
+create table Funcionarios_enderecos(pkEndereco serial primary key,
+		 fkFuncionario int, 
+		logradouro varchar (60), 
+		bairro varchar (60), 
+		cidade varchar (30), 
+		estado char (2), 
+		pais varchar (30), 
+		cep char (9),
+
+		constraint endFuncionario foreign key (fkFuncionario) references funcionarios(pkfuncionario) on update cascade on delete cascade
+		);	
+
+create table Produtos( pkProduto serial primary key,
+			nome varchar(60) unique, 
+			estoqueMinimo int, 
+			qtdEstoque int
+		);
+
+create  table  Vendas( pkVenda serial primary key,
+			fkCliente int, 
+			fkVendedor int, 
+			numero varchar (40), 
+			data date,
+
+			constraint endCliente foreign key (fkCliente) references Clientes(pkCliente),
+			
+			constraint endVendedor foreign key (fkVendedor) references Funcionarios(pkFuncionario)
+			);	 
+
+
+
+create  table  Vendas_itens( pkItem serial primary key,
+			fkVenda int, 
+			fkProduto int, 
+			qtd int, 
+			valorUnitario decimal(8,2),
+
+			constraint endVendas unique (fkVenda, fkProduto),
+
+			constraint endVenda foreign key (fkVenda) references Vendas(pkVenda),
+			
+			constraint endProduto foreign key (fkProduto) references Produtos(pkProduto)
+			);	 
+
+create  table  fornecedores( pkFornecedor serial primary key,
+			nome varchar(75),
+			cpf char(14) unique
+			);	 
+
+			
+create table fornecedores_enderecos(
+					pkEndereco serial primary key,
+					fkFornecedor int,
+					logradouro varchar(60),
+					bairro varchar(110),
+					cidade varchar(74),
+					estado char(2),
+					pais varchar(50) default 'brasil',
+					cep char(9),
+					constraint endFornecedor_fornecedor foreign key(fkFornecedor) references Fornecedores(pkFornecedor) on delete cascade on update cascade
+					);
+
+create table compras(
+		pkCompra serial primary key,
+		fkFornecedor int,
+		numero int,
+		data date,
+		
+		constraint	comprasFornecedor foreign key (fkFornecedor) references Fornecedores(pkFornecedor)
+
+);
+
+
+
+create table compras_itens(
+		pkItem serial primary key,
+		fkCompra int,
+		fkProduto int,
+		qts int,
+		valorUnitario decimal(8,2),
+		
+		constraint comprasItens_compra foreign key (fkCompra) references compras(pkCompra),
+		constraint comprasItens_produto foreign key (fkProduto) references Produtos(pkProduto)
+
+);
+
+
+create table financeiro_entradas(
+				pkFinanceiro serial primary key,
+				fkVendas int,
+				dataEmissao date,
+				dataVencimento date,
+				dataBaixa date,
+				valor decimal(8,2),
+				tipo_documento varchar(50),
+
+				constraint fenanceiroEntrada_vendas foreign key (fkVendas) references vendas(pkVenda)
+				);
+
+create table financeiro_saidas(
+				pkFinanceiro serial primary key,
+				fkCompras int,
+				dataEmissao date,
+				dataVencimento date,
+				dataBaixa date,
+				valor decimal(8,2),
+				tipo_documento varchar(50),
+
+				constraint financeiroentrada_compras foreign key (fkCompras) references compras(pkCompra)
+				);
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+1-a)
+insert into clientes(nome,cpf)
+values
+('bruna','27384928493'),
+('renner','29334998172'),
+('bruno ','27283498374'),
+('djoan','27334554378'),
+('arthur','34883773829')
+
+insert into clientes_enderecos(fkCliente,logradouro,bairro,cidade,estado,pais,cep)
+values
+(1,'rua 9','sao pedro','crominia','go','brasil','75650-000'),
+(2,'rua 3','sao pedro','morrinhos','go','brasil','75650-777'),
+(3,'rua 2','sao pedro','pontalina','go','brasil','75650-444'),
+(4,'rua 7','sao pedro','caldas','go','brasil','75650-222'),
+(5,'rua 4','sao pedro','roxedo','go','brasil','75653-460')
+
+
+
+b)
+insert into cargos(nome,descricao)
+values
+('vendedor','vende produtos'),
+('secretaria','auxilia'),
+('gerente','gerenciar')
+
+
+c) 
+insert into Funcionarios(fkCargo,nome,cpf)
+values
+(2,'Mamão','100100-10'),
+(2,'dyoglas','29334-829'),
+(3,'marcio','17382-283'),
+(1,'lucas','37281-927'),
+(1,'pedro','27338-492'),
+(1,'joao','28392-738')
+	
+--------------------------------------------------------------------
+ALTER TABLE funcionarios_enderecos DROP CONSTRAINT endfuncionario
+EXCLUIR A CONSTRAINT RESTRIÇÃO 
+
+ALTER TABLE funcionarios_enderecos ADD CONSTRAINT endfuncionario
+ALETERAR A RESTRIÇÃO	
+--------------------------------------------------------------------
+
+select * from funcionarios
+ order by fkcargo
+
+d) 
+insert into fornecedores(nome,cpf)
+values
+('luciano','17229883-018'),
+('guilherme','273819273-829'),
+('carlos','26773382-917')
+
+
+e)
+insert into produtos(nome,estoqueMinimo,qtdEstoque)
+values
+('creme','10','70'),
+('desodorante','18','80'),
+('rimel','14','79'),
+('bronzeador','16','89'),
+('batom','19','78')
+
+f)
+INSERT INTO compras (fkFornecedor, numero,data)
+VALUES
+(1, 10764, '2018-03-13'),
+(2,9876,'2017-11-23'),
+(3,10000, '2018-01-01');
+
+
+
+
+INSERT INTO compras_itens (fkCompra, fkProduto, qts, valorUnitario)
+VALUES
+(1,1,10, 20),
+(1,3,15, 25),
+(1,2,1,35),
+
+(2,1,10,20),
+(2,4,3,40),
+(2,3,20,28),
+
+(3,5,4,75),
+(3,4,3,32),
+(3,2,1,40);
+
+
+g)
+INSERT INTO vendas(fkCliente,fkVendedor,numero,data)
+VALUES
+(1,1,'a5487','2018-10-22'),
+(1,3,'a7654','2017-07-15'),
+
+(2,2,'b4598','2017-11-05'),
+(2,1,'b8765','2017-01-15'),
+
+(3,3,'c4657','2018-06-29'),
+(3,2,'c2987','2017-09-23'),
+
+(4,1,'d7563','2018-02-09'),
+(4,2,'d3657','2018-07-01'),
+
+(5,2,'e9876','2016-07-23'),
+(5,3,'e1455','2018-12-13');
+
+
+
+INSERT INTO vendas_itens(fkVenda,fkProduto, qtd, valorUnitario)
+VALUES
+
+(31,1,1,20),
+(31,3,5,25),
+(31,4,2,50),
+
+(32,5,1,70),
+(32,3,10,25),
+(32,1,1,10),
+
+(33,2,1,50),
+(33,1,4,20),
+(33,5,3,70),
+
+(34,2,2,150),
+(34,4,1,250),
+(34,3,3,254),
+
+(35,2,3,340),
+(35,1,3,30),
+(35,3,2,25),
+
+(36,4,3,300),
+(36,5,1,500),
+(36,3,2,25),
+
+(37,5,2,10),
+(37,1,5,40),
+(37,2,1,45),
+
+(38,5,2,30),
+(38,2,2,20),
+(38,4,1,50),
+
+(39,2,1,20),
+(39,3,2,25),
+(39,4,3,40),
+
+(40,1,1,20),
+(40,2,1,40),
+(40,3,2,25);
+
+
+ h)
+insert into financeiro_entradas (fkvendas, dataemissao, datavencimento, databaixa, valor, tipo_documento)
+ values 
+ ('31', '2001-01-01', '2001-02-01', '2001-01-25', '68', 'Recibo'),     
+('31', '2001-01-01', '2001-02-01', '2001-01-30', '650', 'Recibo'),
+('32', '2002-02-02', '2001-03-01', '2001-02-18', '56', 'Recibo'),
+('32', '2002-02-02', '2001-03-01', '2001-02-14', '450', 'Recibo'),
+('33', '2003-03-03', '2001-04-01', '2001-03-23', '86', 'Recibo'),
+('33', '2003-03-03', '2001-04-01', '2001-03-31', '86', 'Recibo'),
+('34', '2004-04-04', '2001-05-01', '2001-04-26', '150', 'Recibo'),
+('34', '2004-04-04', '2001-05-01', '2001-04-22', '16', 'Recibo'),
+('35', '2005-05-05', '2001-06-01', '2001-05-12', '160', 'Recibo'),
+('35', '2005-05-05', '2001-06-01', '2001-05-26', '15', 'Recibo'),
+('36', '2006-06-06', '2001-07-01', '2001-06-20', '13', 'Recibo'),
+('36', '2006-06-06', '2001-07-01', '2001-06-17', '19.50', 'Recibo'),
+('37', '2007-07-07', '2001-08-01', '2001-07-11', '10', 'Recibo'),
+('37', '2007-07-07', '2001-08-01', '2001-07-21', '10', 'Recibo'),
+('38', '2008-08-08', '2001-09-01', '2001-08-17', '12', 'Recibo'),
+('38', '2008-08-08', '2001-09-01', '2001-08-27', '13', 'Recibo'),
+('39', '2009-09-09', '2001-10-01', '2001-09-24', '35', 'Recibo'),
+('39', '2009-09-09', '2001-10-01', '2001-09-29', '36', 'Recibo'),
+('40', '2010-10-10', '2001-11-01', '2001-10-23', '22', 'Recibo'),
+('40', '2010-10-10', '2001-11-01', '2001-10-14', '28', 'Recibo')
+
+insert into financeiro_saidas (fkcompras, dataemissao, datavencimento, databaixa, valor, tipo_documento) 
+values 
+('1','2017-08-12', '2017-12-12', '2017-11-25','170','pagamento'),
+('1','2017-08-12', '2017-12-12', '2017-12-01','10','pagamento'),
+('2','2016-04-29', '2016-08-29', '2016-06-13','101','pagamento'),
+('2','2016-04-29', '2016-08-29', '2016-07-23','10.50','pagamento'),
+('3','2015-12-13', '2016-04-13', '2016-03-30','13.50','pagamento'),
+('3','2015-12-13', '2016-04-13', '2016-01-24','17.50','pagamento')
+
+
+
+
+2)A)
+select nome, estoqueminimo, qtdestoque from produtos
+
+
+B)!!!!!!!!!!!!!!!CORREÇÃO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+select clientes.nome, to_char(datavencimento,'mm/yyyy'), sum(valor)
+from financeiro_entradas join vendas 
+on fkvendas = pkvenda join clientes
+on fkcliente = pkcliente
+where databaixa is null
+group by nome, to_char(datavencimento,'mm/yyyy')
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+C)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+select fornecedores.nome,to_char( datavencimento,'mm/yyyy'),sum(valor)
+from financeiro_saidas join compras
+on fkcompras= pkcompra join fornecedores on 
+fkfornecedor=pkfornecedor
+where databaixa is null
+group by nome,to_char( datavencimento,'mm/yyyy')
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+D)
+select clientes.nome, databaixa, tipo_documento, valor
+from clientes join vendas
+on pkcliente = fkcliente join financeiro_entradas
+on pkvenda = fkvendas
+
+
+E)
+select databaixa, sum(valor)
+from financeiro_entradas
+group by databaixa
+
+
+
+F)
+select clientes.nome, sum(valorunitario)
+from clientes join vendas
+on pkcliente = fkcliente join vendas_itens
+on pkvenda = fkvenda
+group by clientes.nome
+
+
+
+G)
+select funcionarios.nome, sum(0.5*valor) from funcionarios join cargos
+on pkcargo=fkcargo join vendas
+on pkfuncionario=fkvendedor join financeiro_entradas on pkvenda=fkvendas
+where fkcargo = 1 group by funcionarios.nome
+
+
+H)
+select cidade, sum(valorunitario)
+from clientes_enderecos join clientes
+on fkcliente = pkcliente join vendas
+on pkcliente = vendas.fkcliente join vendas_itens
+on pkvenda = fkvenda
+group by cidade
+
+
+I)
+select estado, sum(valorunitario)
+from clientes_enderecos join clientes
+on fkcliente = pkcliente join vendas
+on pkcliente = vendas.fkcliente join vendas_itens
+on pkvenda = fkvenda
+group by estado
+
+
+J)
+select produtos, sum(qtd), sum(valorunitario)
+from produtos join vendas_itens
+on pkproduto = fkproduto 
+group by produtos
+
+
+K)
+select produtos, funcionarios.nome, data, qtd
+from produtos join vendas_itens
+on pkproduto = fkproduto join vendas
+on fkvenda = pkvenda join funcionarios
+on fkcargo = fkvendedor
+
+L)
+
+create view comprasprodutos as
+
+select nome, qtdestoque,sum(valorunitario), sum(qtdestoque*valorunitario) valorunitariototal
+from compras_itens join produtos
+on fkproduto = pkproduto join compras
+on fkcompra = pkcompra
+group by nome,qtdestoque
+
+
+
+M)
+select nome, compras_itens.valorunitario, vendas_itens.valorunitario, vendas_itens.valorunitario - compras_itens.valorunitario
+from vendas_itens join produtos
+on vendas_itens.fkproduto = pkproduto join compras_itens
+on compras_itens.fkproduto = pkproduto
+group by nome, compras_itens.valorunitario, vendas_itens.valorunitario
+
+
+N)select clientes.nome, avg(valor)
+from clientes join vendas
+on pkcliente = fkcliente 
+join financeiro_entradas on pkvenda= fkvendas
+group by clientes.nome
+
+
+o)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+SELECT vc.nome, 
+       valorconsumido, 
+       valorprevisto, 
+       (valorconsumido+valorprevisto)/2 valorMedioTotal
+FROM
+(SELECT NOME, AVG(VALOR) valorConsumido
+FROM FINANCEIRO_SAIDAS JOIN COMPRAS ON
+     FKCOMPRAs = PKCOMPRA JOIN FORNECEDORES ON
+     FKFORNECEDOR = PKFORNECEDOR
+WHERE DATABAIXA IS NOT NULL     
+GROUP BY NOME) vc FULL JOIN 
+
+(SELECT NOME, AVG(VALOR)valorPrevisto
+FROM FINANCEIRO_SAIDAS JOIN COMPRAS ON
+     FKCOMPRAs = PKCOMPRA JOIN FORNECEDORES ON
+     FKFORNECEDOR = PKFORNECEDOR
+WHERE DATABAIXA IS NULL     
+GROUP BY NOME) vp ON vc.nome=vp.nome
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+p)
+select produtos.nome, estoqueminimo, qtdestoque
+from produtos
+where qtdestoque - estoqueminimo < 10
+
+
+Q)
+select produtos.nome, vendas_itens.qtd
+from produtos join vendas_itens
+on pkproduto = vendas_itens.fkproduto join compras_itens
+on pkproduto = compras_itens.fkproduto
+where vendas_itens.qtd > compras_itens.qts
+group by produtos.nome, vendas_itens.qtd
+
+R)
+select produtos.nome, compras_itens.qts
+from produtos join vendas_itens
+on pkproduto = vendas_itens.fkproduto join compras_itens
+on pkproduto = compras_itens.fkproduto
+where compras_itens.qts > vendas_itens.qtd
+group by produtos.nome, compras_itens.qts
+
+
+
+S)select clientes.nome, financeiro_entradas.dataemissao,
+financeiro_entradas.datavencimento,financeiro_entradas.databaixa
+from clientes join vendas
+on pkcliente = fkcliente join financeiro_entradas
+on pkvenda = fkvendas 
+group by clientes.nome,financeiro_entradas.dataemissao,
+financeiro_entradas.datavencimento,financeiro_entradas.databaixa
+
+
+T)select fornecedores.nome, financeiro_saidas.dataemissao,
+financeiro_saidas.datavencimento,financeiro_saidas.databaixa
+from fornecedores join compras
+on pkfornecedor = fkfornecedor join financeiro_saidas
+on pkcompra = fkcompras 
+group by fornecedores.nome,financeiro_saidas.dataemissao,
+financeiro_saidas.datavencimento,financeiro_saidas.databaixa
+
+
+
+
+
+
+3) a)create view Estoque as
+select nome, estoqueminimo, qtdestoque from produtos
+
+	
+
+b)
+create view contasreceber as
+select clientes.nome, to_char(datavencimento,'mm/yyyy'), sum(valor)
+from financeiro_entradas join vendas 
+on fkvendas = pkvenda join clientes
+on fkcliente = pkcliente
+where databaixa is null
+group by nome, to_char(datavencimento,'mm/yyyy')
+
+
+c)
+
+create view contaspagar as
+
+select fornecedores.nome,to_char( datavencimento,'mm/yyyy'),sum(valor)
+from financeiro_saidas join compras
+on fkcompras= pkcompra join fornecedores on 
+fkfornecedor=pkfornecedor
+where databaixa is null
+group by nome,to_char( datavencimento,'mm/yyyy'
+
+	
+
+d)
+create view movimentocaixa as
+select clientes.nome, databaixa, tipo_documento, valor
+from clientes join vendas
+on pkcliente = fkcliente join financeiro_entradas
+on pkvenda = fkvendas
+
+
+e)create view caixa as
+select databaixa, sum(valor)
+from financeiro_entradas
+group by databaixa
+
+
+f)
+create view vendascliente as
+select clientes.nome, sum(valorunitario)
+from clientes join vendas
+on pkcliente = fkcliente join vendas_itens
+on pkvenda = fkvenda
+group by clientes.nome
+
+
+g)
+create view vendasvendedores as
+select funcionarios.nome, sum(0.5*valor) from funcionarios join cargos
+on pkcargo=fkcargo join vendas
+on pkfuncionario=fkvendedor join financeiro_entradas on pkvenda=fkvendas
+where fkcargo = 1 group by funcionarios.nome
+
+
+h)
+create view vendascidades as
+select cidade, sum(valorunitario)
+from clientes_enderecos join clientes
+on fkcliente = pkcliente join vendas
+on pkcliente = vendas.fkcliente join vendas_itens
+on pkvenda = fkvenda
+group by cidade
+
+
+i)
+
+create view vendasestados as
+select estado, sum(valorunitario)
+from clientes_enderecos join clientes
+on fkcliente = pkcliente join vendas
+on pkcliente = vendas.fkcliente join vendas_itens
+on pkvenda = fkvenda
+group by estado
+
+j)
+
+
+create view vendasprodutos  as
+
+select produtos, sum(qtd) qtdtotal, sum(qtdestoque) qtdestoque
+from produtos join vendas_itens
+on pkproduto = fkproduto
+group by produtos
+
+
+k)
+
+
+create view produtosvendedores as
+select produtos, funcionarios.nome, data, qtd
+from produtos join vendas_itens
+on pkproduto = fkproduto join vendas
+on fkvenda = pkvenda join funcionarios
+on fkcargo = fkvendedor
+
+
+
+l) 
+
+
+create view compras_produtos as
+select nome, sum(qtdestoque) qtdestoque, sum(qtdestoque*valorunitario) valor
+from compras_itens join produtos
+on fkproduto = pkproduto join compras
+on fkcompra = pkcompra
+group by nome
+
+
+
+
+m)
+
+
+create view compra_itens as
+select nome, sum(qtdestoque) qtdestoque, sum(qtdestoque*valorunitario) valor
+from compras_itens join produtos
+on fkproduto = pkproduto join compras
+on fkcompra = pkcompra
+group by nome
+
+
+
+n)
+create view faturamentomedio as
+
+select clientes.nome, avg(valor)
+from clientes join vendas
+on pkcliente = fkcliente 
+join financeiro_entradas on pkvenda= fkvendas
+group by clientes.nome
+
+
+o)create view faturamentomediovendedor as
+
+SELECT vc.nome, 
+       valorconsumido, 
+       valorprevisto, 
+       (valorconsumido+valorprevisto)/2 valorMedioTotal
+FROM
+(SELECT NOME, AVG(VALOR) valorConsumido
+FROM FINANCEIRO_SAIDAS JOIN COMPRAS ON
+     FKCOMPRAs = PKCOMPRA JOIN FORNECEDORES ON
+     FKFORNECEDOR = PKFORNECEDOR
+WHERE DATABAIXA IS NOT NULL     
+GROUP BY NOME) vc FULL JOIN 
+
+(SELECT NOME, AVG(VALOR)valorPrevisto
+FROM FINANCEIRO_SAIDAS JOIN COMPRAS ON
+     FKCOMPRAs = PKCOMPRA JOIN FORNECEDORES ON
+     FKFORNECEDOR = PKFORNECEDOR
+WHERE DATABAIXA IS NULL     
+GROUP BY NOME) vp ON vc.nome=vp.nome
+
+
+
+p)
+create view agendamento as
+
+
+select produtos.nome, estoqueminimo, qtdestoque
+from produtos
+where qtdestoque - estoqueminimo < 10
+
+
+
+q)
+create view evasaoprodutos as
+
+select produtos.nome, vendas_itens.qtd
+from produtos join vendas_itens
+on pkproduto = vendas_itens.fkproduto join compras_itens
+on pkproduto = compras_itens.fkproduto
+where vendas_itens.qtd > compras_itens.qts
+group by produtos.nome, vendas_itens.qtd
+
+
+
+r)
+create view tomadaprodutos as
+select produtos.nome, compras_itens.qts
+from produtos join vendas_itens
+on pkproduto = vendas_itens.fkproduto join compras_itens
+on pkproduto = compras_itens.fkproduto
+where compras_itens.qts > vendas_itens.qtd
+group by produtos.nome, compras_itens.qts
+
+
+s)
+create view nomecliente as
+select clientes.nome, financeiro_entradas.dataemissao,
+financeiro_entradas.datavencimento,financeiro_entradas.databaixa
+from clientes join vendas
+on pkcliente = fkcliente join financeiro_entradas
+on pkvenda = fkvendas 
+group by clientes.nome,financeiro_entradas.dataemissao,
+financeiro_entradas.datavencimento,financeiro_entradas.databaixa
+
+
+t)
+create view nomefornecedor as
+select fornecedores.nome, financeiro_saidas.dataemissao,
+financeiro_saidas.datavencimento,financeiro_saidas.databaixa
+from fornecedores join compras
+on pkfornecedor = fkfornecedor join financeiro_saidas
+on pkcompra = fkcompras 
+group by fornecedores.nome,financeiro_saidas.dataemissao,
+financeiro_saidas.datavencimento,financeiro_saidas.databaixa
+
+
+
+
+
+
+4)a)select * from vendasestados
+where estado = 'go'
+
+
+b)select * from contasreceber
+where to_char(datavencimento,'yyyy')>='2018'
+
+c)select faturamentomedioclientesb 
+ from clientes join vendas
+
+on pkcliente=fkcliente 
+join financeiro_entradas
+on pkvenda = fkcliente
+	group by clientes.nome
+
+where valorprevisto > valorconsumido
+
+
+
+5)a)select clientes.nome, funcionarios.nome,to_char(data,'MM/YYYY'),to_char(datavencimento, 'MM/YYYY')
+ from cargos join funcionarios
+on pkcargo=fkcargo join vendas
+on pkfuncionario= fkvendedor join 
+clientes on pkcliente= fkcliente 
+where datavencimento is null
+group by clientes.nome, funcionarios.nome, to_char(data, 'MM/YYYY'), to_char(datavencimento, 'MM/YYYY')
+
+
+
+b)
+select clientes.nome, funcionarios.nome,to_char(databaixa, 'MM/YYYY')
+ from cargos join funcionarios
+on pkcargo=fkcargo join vendas
+on pkfuncionario= fkvendedor join 
+clientes on pkcliente= fkcliente 
+join vendas_itens on pkvenda= fkvenda
+join financeiro_entradas on pkvenda=fkvenda
+where (valorunitario*qtd) < valor
+group by clientes.nome, funcionarios.nome, to_char(databaixa, 'MM/YYYY')
+
+
+
+
+c)select fornecedores.nome,to_char(databaixa, 'MM/YYYY')
+ from fornecedores join compras
+on pkfornecedor=fkfornecedor join compras_itens
+on pkcompra= fkcompra join 
+financeiro_saidas on pkcompra= fkcompra 
+where (valorunitario*qts) < valor
+group by fornecedores.nome, to_char(databaixa, 'MM/YYYY')
+
+
+d)select to_char(databaixa, 'MM/YYYY')
+ from financeiro_saidas join compras
+on pkcompra = fkcompras join compras_itens
+on fkcompras = pkcompra 
+where databaixa is null
+group by to_char(databaixa, 'MM/YYYY')
+
+
+
+e)
+
+
+
+
+f)select nome, qtdestoque
+ from produtos
+where (qtdestoque < estoqueminimo)
+group by nome, qtdestoque
+
+
+g)select clientes.nome
+from clientes join funcionarios
+on pkcliente = pkfuncionario
+where clientes.cpf = funcionarios.cpf
+
+
+
+h)
+select clientes.nome
+from clientes join clientes_enderecos
+on pkcliente = fkcliente join funcionarios_enderecos 
+on clientes_enderecos.logradouro = funcionarios_enderecos.logradouro
+and clientes_enderecos.bairro = funcionarios_enderecos.bairro
+and clientes_enderecos.cidade = funcionarios_enderecos.cidade
+and clientes_enderecos.estado = funcionarios_enderecos.estado
+and clientes_enderecos.pais = funcionarios_enderecos.pais
+and clientes_enderecos.cep = funcionarios_enderecos.cep
+
+
+I)
+select * from clientes_enderecos C1 
+JOIN clientes_enderecos C2
+ON C1.logradouro = C2.logradouro
+WHERE C1.bairro=C2.bairro
+and C1.cidade = C2.cidade
+and C1.fkCliente != C2.fKCliente
+
+J)
+
+select * from funcionarios_enderecos C1 
+JOIN funcionarios_enderecos C2
+ON C1.logradouro = C2.logradouro
+WHERE C1.bairro=C2.bairro
+and C1.cidade = C2.cidade
+and C1.fkfuncionario != C2.fKfuncionario
+
+K)
+select produtos.nome from produtos join vendas_itens
+on pkproduto= vendas_itens.fkproduto join compras_itens
+on pkproduto= compras_itens.fkproduto
+where vendas_itens.valorunitario < compras_itens.valorunitario
+
+L)
+select clientes.nome, datavencimento, valor from financeiro_entradas join vendas
+on pkvenda = fkvendas join clientes
+on pkcliente = fkcliente
+where databaixa is null
+
+N)
+select clientes.nome, dataemissao, datavencimento, databaixa
+from clientes join vendas
+on pkcliente = fkcliente join financeiro_entradas
+on pkvenda = fkvendas
+where databaixa > datavencimento
+
+M)
+select fornecedores.nome, dataemissao, datavencimento, databaixa
+from fornecedores join compras
+on pkfornecedor = fkfornecedor join financeiro_saidas
+on pkcompra = fkcompras
+where databaixa < datavencimento

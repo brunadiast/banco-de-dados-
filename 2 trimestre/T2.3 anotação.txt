@@ -1,0 +1,31 @@
+fk_cliente
+criar restrição de chave estrangeira e chave primaria 
+varchar ('1')unique 
+cliente funcionario e cargo, mais ou menos trbalhou
+
+qtdestoque mostra a quatidade de estoque
+estoque minimo para não ficar sem preoduto enquanto o outro chega
+fk_vendedor que está no está no pk_funcionário. truque do coordenador 
+
+financeiro entrada entrada de dinheiro das vendas
+financeiro saída saída de dinheiro de compra do fornecedor
+
+data de emissão dia que foi vendido
+data de vencimento o dia em que o compromisso tem que ser pago
+
+contas a receber data da baixa nula null
+contas a pagar data de baixa nula null
+contas recebidas diferente de null
+
+-------------------------------------------------------------------------
+PASSO A PASSO PARA CONSTRUIR UM SELECT
+
+passo número 1: escreva o nome das tabelas onde estão as informações.(from)
+passo número 2: ligue as tabelas: como ligar as tabelas?(from) 
+
+passo número 3: exiba as informações necessárias
+3.1) caso seja necessário (sum,avg,max,min,count)
+2.1.1) coloque as funções necessárias
+3.1.2) todos os atributos que não tem função, copie para o group by
+
+4) 

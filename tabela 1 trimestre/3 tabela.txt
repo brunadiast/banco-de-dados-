@@ -1,0 +1,122 @@
+inserir três cargos e três funcionários
+para cada funcionário 3 dependentes
+1 endereço para cada funcionário
+3 telefones
+---------------------------------------------------------------------------------------------------------------------------------------------------
+create table cargo(pk_cargo serial primary key,
+			descricao varchar(30))
+---------------------------------------------------------------------------------------------------------------------------------------------------
+select * from cargo
+---------------------------------------------------------------------------------------------------------------------------------------------------
+create table funcionario(pk_funcionario serial primary key,
+			fk_cargo int,
+			nome char(55),
+			cpf varchar(11),
+			nascimento date,
+			salario decimal (10,2),
+			constraint fk_cargo foreign key (fk_cargo) references 
+				cargo(pk_cargo))
+---------------------------------------------------------------------------------------------------------------------------------------------------
+select * from funcionario
+---------------------------------------------------------------------------------------------------------------------------------------------------
+create table funcionario_telefone(pk_tel serial primary key,
+				 fk_funcionario int,
+				 ddd char (3),
+				 numero varchar (10),
+				 constraint fk_functel foreign key (fk_funcionario) references 
+				 funcionario(pk_funcionario)) 
+---------------------------------------------------------------------------------------------------------------------------------------------------
+create table funcionario_dependente (pk_dep serial primary key,
+				   nome varchar (80),
+				   cpf varchar (11),
+				   parentesco varchar (30),
+				   nascimento date,
+				   fk_funcionario int, 
+				   constraint fk_fucdep foreign key (fk_funcionario) references 
+				funcionario (pk_funcionario)) 
+---------------------------------------------------------------------------------------------------------------------------------------------------
+select * from funcionario_dependente
+---------------------------------------------------------------------------------------------------------------------------------------------------
+create table funcionario_telefone(pk_tel serial primary key,
+				 fk_funcionario int,
+				 ddd char (3),
+				 numero varchar (10),
+				 constraint fk_functel foreign key (fk_funcionario) references 
+				 funcionario(pk_funcionario)) 
+---------------------------------------------------------------------------------------------------------------------------------------------------
+select * from funcionario_telefone
+---------------------------------------------------------------------------------------------------------------------------------------------------
+CRIEI A TABELA AGORA VOU INSERIR VALORES
+---------------------------------------------------------------------------------------------------------------------------------------------------
+insert into cargo(descricao)
+values
+('professor'),
+('diretor'),
+('cordenador')
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+insert into funcionario(nome,cpf,nascimento,salario)
+values
+('angela','70129312393','2000-02-20','20001'),
+('paula','70221331245','2001-03-04','100000'),
+('josi','45553444523','3001-09-19','20000')
+---------------------------------------------------------------------------------------------------------------------------------------------------
+insert into funcionario_telefone(ddd,numero,fk_funcionario) values
+('62','9999-1115',10),
+('43','9999-9915',10),
+('12','0000-9994',10),
+
+('10','1111-1115',11),
+('29','9999-9994',11),
+('11','9999-9994',11),
+
+('22','8888-9993',12),
+('11','9999-2223',12),
+('12','222-33334',12)
+---------------------------------------------------------------------------------------------------------------------------------------------------
+insert into funcionario_dependente(nome,cpf, parentesco, nascimento, fk_funcionario) values
+('bruna', '10999999', 'filha', '01-01-2014', 10),
+('paulo','10999999', 'filho', '01-01-2014', 10),
+('blenda','10999999', 'filha', '01-01-2014', 10),
+
+('renata','10999999', 'mae', '01-01-2014', 11),
+('poly','10999999', 'prima', '01-01-2014', 11),
+('fernando','10999999', 'marido', '01-01-2014', 11),
+
+('maria','10999999', 'mae', '01-01-2014', 12),
+('bonfim','10999999', 'pai', '01-01-2014', 12),
+('debora','10999999', 'sobrinha', '01-01-2014', 12)
+---------------------------------------------------------------------------------------------------------------------------------------------------
+update aluno set nome ='bruna' 
+where pk_aluno = 7
+TROCAR UMA LINHA DE COMANDO OU INFORMAÇÕES DE UMA PESSOA POR OUTRA 
+---------------------------------------------------------------------------------------------------------------------------------------------------
+update funcionario set salario = salario + salario * 10/100 where fk_cargo = 1 
+AUMENTAR O SÁLARIO EM 10% EM UM ÚNICO COMANDO 
+----------------------------------------------------------------------------------------------------------------------------------------------------
+create table aluno_email (pk_email serial primary key,
+		email varchar (80),
+		fk_aluno int,
+		constraint fk_at foreign key (fk_aluno) references aluno( pk_aluno)
+		on delete cascade on update cascade )
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

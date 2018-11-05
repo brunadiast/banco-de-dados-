@@ -1,0 +1,1 @@
+﻿alter table funcionario_dependente drop constraint fk_fucdep

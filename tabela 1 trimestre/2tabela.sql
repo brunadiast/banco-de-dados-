@@ -1,0 +1,1 @@
+﻿select * from funcionario_dependente

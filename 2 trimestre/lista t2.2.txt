@@ -1,0 +1,54 @@
+a) 
+select nome, avg(valor)
+from alunos join notas on pk_aluno = fk_aluno
+where fk_disciplina = 2
+group by nome
+
+
+b)
+select cursos.nome, max(valor), min(valor)
+from frequencia join disciplinas on pk_disciplinas = fk_disciplina 
+                join cursos on pk_cursos = fk_curso
+group by cursos.nome                
+
+c)
+select disciplinas.nome, max(valor), min(valor),avg(valor)
+from notas join disciplinas on pk_disciplinas = fk_disciplina 
+group by disciplinas.nome                
+
+d)
+select disciplinas.nome, sum(valor),avg(valor)
+from frequencia join disciplinas on pk_disciplinas = fk_disciplina 
+group by disciplinas.nome 
+
+e)
+select disciplinas.nome, count(*)
+from matriculas join disciplinas on pk_disciplinas = fk_disciplina 
+where dependencia = true
+
+group by disciplinas.nome                
+
+f) 
+select disciplinas.nome, periodo, turno, count(pk_matricula)
+from matriculas join disciplinas on pk_disciplinas = fk_disciplina
+group by disciplinas.nome, periodo, turno
+
+G)
+select funcionarios.nome, count(fk_professor)
+from funcionarios join disciplinas on pk_funcionario  = fk_professor
+where cargo = 'coordenador'
+group by funcionarios.nome
+having count(*)=3
+
+H)
+select funcionarios.nome, avg(valor)
+from funcionarios join disciplinas on pk_funcionario = fk_professor 	
+	 	  join notas on pk_disciplinas = fk_disciplina
+group by funcionarios.nome
+having avg (valor) < 5
+
+
+
+
+
+

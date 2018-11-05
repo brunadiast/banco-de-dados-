@@ -1,0 +1,49 @@
+cargo(pk_cargo,descrição)
+funcionário(pk_funcionario,nome,cpf,nascimento:date,salario:decimal(10,2),fk_cargo)
+funcionario_telefonne(pk_tel,ddd,numero,fk_funcionario)
+funcionario_endereco(pk_end,logradouro,bairro,cidade,estado,fk_funcionario)
+funcionario_dependente(pk_dep,nome,cpf,parentesco,nascimento,fk_funcionario)
+----------------------------------------------------------------------------------------------------------------------------------
+create table cargo(pk_cargo serial primary key,
+			descricao varchar(30))
+----------------------------------------------------------------------------------------------------------------------------------
+select * from cargo
+-----------------------------------------------------------------------------------------------------------------------------------
+create table funcionario(pk_funcionario serial primary key,
+			fk_cargo int,
+			cpf varchar(11),
+			nascimento date,
+			salario decimal (10,2),
+			constraint fk_cargo foreign key (fk_cargo) references 
+				cargo(pk_cargo))
+--------------------------------------------------------------------------------------------------------------------------------------
+select * from funcionario
+--------------------------------------------------------------------------------------------------------------------------------------
+create table funcionario_telefone(pk_tel serial primary key,
+				 fk_funcionario int,
+				 ddd char (3),
+				 numero varchar (10),
+				 constraint fk_functel foreign key (fk_funcionario) references 
+				 funcionario(pk_funcionario)) 
+--------------------------------------------------------------------------------------------------------------------------------------
+select * from funcionario_telefone
+--------------------------------------------------------------------------------------------------------------------------------------
+create table funcionario_dependente (pk_dep serial primary key,
+				   nome varchar (80),
+				   cpf varchar (11),
+				   parentesco varchar (30),
+				   nascimento date,
+				   fk_funcionario int, 
+				   constraint fk_fucdep foreign key (fk_funcionario) references 
+				funcionario (pk_funcionario)) 
+--------------------------------------------------------------------------------------------------------------------------------------
+select * from funcionario_dependente
+---------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+

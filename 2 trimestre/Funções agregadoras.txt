@@ -1,0 +1,40 @@
+
+EXEMPLOS DE TABELA USANDO BDA DO TRBALHO
+
+
+select nome,velor,valor/2
+from alunos join notas on pk_aluno = fk_aluno
+order by noome
+-------------------------------------------------------------------------------------------------------------------------------------
+select nome, sum (valor) , count(*), avg(valor), max(valor), min(valor)  
+from alunos join notas on pk_aluno = fk_aluno
+group by nome ====> AGRUPE POR NOME, TUDO QUE ESTA NA FUNÇÃO AGREGADORA PRECISA USAR GROUP
+order by nome ====> ORDENE POR NOME
+
+COUNT CONTA QUANTAS LINHAS FORAM ACHATADAS
+AVG CALCULA A MÉDIA =====> ELA SOMA E DIVIDE O VALOR
+
+
+
+select nome,count(*), sum(frequencia)
+from alunos join frequencia on pk_aluno = fk_aluno
+group by nome
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+

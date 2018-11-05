@@ -1,0 +1,118 @@
+A)
+SELECT * FROM alunos
+WHERE sexo = 'M';
+
+B)
+SELECT nome,nascimento, 'A' FROM alunos 
+Where sexo = 'F'
+UNION
+SELECT nome,nascimento, 'F' FROM funcionarios
+WHERE sexo = 'F';
+
+C)
+SELECT *
+FROM alunos JOIN matriculas ON pk_aluno = fk_aluno 
+WHERE fk_disciplina = 7 and (DATE_PART('YEAR', CURRENT_TIMESTAMP) - DATE_PART('YEAR', nascimento)) > 16; 
+
+D)
+SELECT alunos.nome
+FROM alunos JOIN funcionarios ON alunos.cpf = funcionarios.cpf;
+
+E)
+SELECT nome,CPF FROM funcionarios
+WHERE cargo = 'Professor' or  cargo = 'Professora'; 
+
+F)
+SELECT funcionarios.nome, funcionarios.CPF
+FROM funcionarios JOIN cursos ON pk_funcionario = fk_professor_coordenador;
+
+G)
+SELECT funcionarios.nome,disciplinas.nome, período, turno 
+FROM funcionarios JOIN disciplinas ON pk_funcionario = fk_professor;
+
+H)
+SELECT disciplinas.nome
+FROM cursos JOIN disciplinas ON pk_cursos = fk_curso
+WHERE cursos.nome = 'Letras';
+
+I) 
+SELECT *
+FROM alunos JOIN matriculas ON pk_aluno = fk_aluno JOIN disciplinas ON fk_disciplina = pk_disciplinas
+WHERE turno = 'Matutino';
+
+J)
+SELECT *
+FROM alunos JOIN matriculas ON pk_aluno = fk_aluno JOIN disciplinas ON pk_disciplinas = fk_disciplina
+WHERE fk_curso = 3 and período = 3 and turno = 'noturno';
+
+K)
+SELECT * 
+FROM cursos
+WHERE (DATE_PART('YEAR', CURRENT_TIMESTAMP)-DATE_PART('YEAR', anoCriacao)) >= 10;
+
+L)
+SELECT funcionarios.nome, RG, CPF 
+FROM funcionarios JOIN disciplinas ON pk_funcionario = fk_professor
+WHERE fk_curso = 1; 
+
+M)
+SELECT alunos.nome, nascimento
+FROM alunos JOIN matriculas ON pk_aluno = fk_aluno
+WHERE fk_disciplina = 9; 
+
+N)
+SELECT alunos.nome
+FROM alunos JOIN matriculas ON pk_aluno = fk_aluno JOIN disciplinas ON pk_disciplinas = fk_disciplina
+WHERE dependencia = true and fk_curso = 1;
+
+O)
+SELECT alunos.nome, disciplinas.nome, frequencia.valor
+FROM alunos JOIN frequencia ON pk_aluno = fk_aluno 
+JOIN disciplinas ON pk_disciplinas = fk_disciplina 
+WHERE disciplinas.fk_curso = 2;
+
+P)
+SELECT alunos.nome, cursos.nome
+FROM alunos JOIN notas ON pk_aluno = fk_aluno JOIN disciplinas ON pk_disciplinas = fk_disciplina JOIN cursos ON pk_cursos = fk_curso
+WHERE valor < 3;
+
+Q)
+SELECT alunos.nome
+FROM alunos JOIN notas ON pk_aluno = fk_aluno JOIN frequencia ON pk_aluno = frequencia.fk_aluno
+WHERE notas.valor < 4 and frequencia.valor >= 7;
+
+R)
+SELECT * 
+FROM alunos JOIN matriculas ON pk_aluno = fk_aluno
+WHERE fk_disciplina = 1 and fk_disciplina <> 3 and sexo = 'M';
+
+
+S)
+SELECT * 
+FROM funcionarios JOIN disciplinas ON pk_funcionario = fk_professor JOIN cursos ON  fk_curso = pk_cursos
+WHERE fk_curso = 1 and fk_professor = 1 and fk_curso = 2 and fk_professor <> 1;
+
+T)
+SELECT funcionarios.nome
+FROM matriculas JOIN disciplinas ON pk_disciplinas = fk_disciplina JOIN funcionarios ON pk_funcionario = fk_professor
+Where  cargo = 'Professor' or cargo = 'Professora' and dependencia = true;
+
+U)
+
+V)
+
+W)
+SELECT *
+FROM funcionarios JOIN alunos ON alunos.cpf = funcionarios.cpf
+WHERE cargo <> 'Professor' and cargo <> 'Professora';
+
+X)
+SELECT *
+FROM cursos JOIN funcionarios ON  pk_funcionario = fk_professor_coordenador JOIN disciplinas ON fk_professor = pk_funcionario
+WHERE fk_professor = NULL;
+
+Y)
+SELECT alunos.nome, disciplinas.nome, período, turno, notas.valor, frequencia.valor
+FROM alunos JOIN notas ON pk_aluno = notas.fk_aluno JOIN frequencia ON pk_aluno = frequencia.fk_aluno
+JOIN matriculas ON pk_aluno = matriculas.fk_aluno JOIN disciplinas ON pk_disciplinas = matriculas.fk_disciplina
+WHERE disciplinas.nome = 'Lógica de Programação';

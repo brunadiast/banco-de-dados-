@@ -1,0 +1,51 @@
+
+create table funcionario(
+	pk_func serial primary key,
+nome varchar(80));
+
+create table tripulacao(
+pk_trip serial primary key,
+fk_piloto int,
+fk_copiloto int,
+fk_comissario1 int,
+fk_comissario2 int,
+fk_comissario3 int,
+constraint fkp foreign key (fk_piloto) references
+				funcionario(pk_func)
+				on delete restrict
+				on update cascade,
+constraint fkc11 foreign key (fk_comissario1)references
+				funcionario(pk_func)
+				on delete restrict
+				on update cascade,
+constraint fkc2 foreign key (fk_comissario2)references
+				funcionario(pk_func)
+				on delete restrict
+				on update cascade,
+constraint fkc3 foreign key (fk_comissario3)references
+				funcionario(pk_func)
+				on delete restrict
+				on update cascade
+
+)
+
+create table cliente(pk_cliente serial primary key,
+			nome varchar(80),
+			idade int)
+
+
+create table aeroporto(pk_aero serial primary key,
+			nome varchar(80),
+			sigla char(3),
+			cidade varchar(80),
+			estado char(2),
+			tipo varchar(15)
+			)
+
+
+create table aeronave(pk_aeronave serial primary key,
+			modelo varchar(15),
+			marca varchar(15)
+			)
+
+

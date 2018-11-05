@@ -1,0 +1,86 @@
+CRIAÇÃO DE TABELA:
+create table aluno (pk_aluno serial primary key,
+		nome varchar (80),
+		idade int)
+CRIO A CHAVE PRIMARIA DA TABELA,QUE É COMO SE FOSSE O NÚMERO DE MATRICULA
+---------------------------------------------------------------------------------------------
+insert into aluno (nome,idade)
+values
+('bruna',15),
+('higor',15),
+('osvaldo',22),
+('celide',25),
+('bruna',13)
+CRIO A TABELA
+-----------------------------------------------------------------------------------------------
+select * from aluno
+IMPRIME OS VALORES
+-----------------------------------------------------------------------------------------------
+create table aluno_telefone (pk_tel serial primary key,
+				fk_aluno int,
+				ddd char(3),
+				numero varchar(10),
+	constraint fk_at foreign key (fk_aluno) references 
+				aluno(pk_aluno))
+
+CHAVE ESTRANGEIRA SE LIGA COM A CHAVE PRIMARIA
+-----------------------------------------------------------------------------------------------
+insert into aluno_telefone
+(fk_aluno , ddd , numero)
+values
+(4,'061','9999-8122'),
+(4,'11','9793-9999'),
+(1,'064','4291-5533'),
+(3,'064','5599-2233'),
+(2,'062','8733-3933');
+ADICIONEI VALORES A TABELA
+----------------------------------------------------------------------------------------------
+select * from aluno_telefone
+IMPRIME OS VALORES
+----------------------------------------------------------------------------------------------
+create table aluno_endereco (
+				pk_end serial primary key,
+				logradouro varchar (80),
+				bairro varchar (40),
+				complemento varchar (60),
+				cidade varchar (40),
+				estado char (2),
+				fk_aluno int,
+				constraint locao foreign key (fk_aluno)
+					references aluno(pk_aluno)
+					on delete cascade on update cascade)
+-----------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
